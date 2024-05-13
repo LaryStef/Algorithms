@@ -32,9 +32,10 @@ template <class T> Stack<T>::~Stack() {
 
 template <class T> void Stack<T>::Reallocate() {
 	T* temp = new T[size * 2];
-	copy(arr, arr + size, temp);
-	arr = move(temp);
+	memcpy(temp, arr, size*sizeof(T));
 	size *= 2;
+	delete[] arr;
+	arr = temp;
 }
 
 template <class T> bool Stack<T>::IsEmpty() {
