@@ -49,8 +49,8 @@ template <class T> void Stack<T>::ShowAll() {
 	if (IsEmpty()) {
 		cout << "Stack is empty" << endl;
 	}
-	for (int i = 0; i < GetLength(); i++) {
-		cout << arr[i] << " ";
+	for (int i = GetLength(); i > 0; i--) {
+		cout << arr[i - 1] << " ";
 	}
 }
 
@@ -160,9 +160,16 @@ int main()
 {
 	StackSort<int> stack = StackSort<int>();
 
-	stack.Sort(10);
+	for (int i = 0; i < 5; i++) {
+		stack.Push(i);
+	}
+	for (int i = 3; i < 8; i++) {
+		stack.Push(i);
+	}
 
+	stack.ShowAll();
 	cout << endl;
+	stack.Sort(10);
 	stack.ShowAll();
 	cout << endl;
 }
