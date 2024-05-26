@@ -18,6 +18,7 @@ public:
 	bool IsEmpty();
 	void ShowAll();
 	int GetLength();
+	T* GetHead();
 };
 
 template <class T> Stack<T>::Stack() {
@@ -76,16 +77,22 @@ template <class T> T Stack<T>::Pop() {
 	return arr[top--];
 }
 
+template <class T> T* Stack<T>::GetHead() {
+	return &arr[top];
+}
+
 template <class T> class StackSort : public Stack<T> {
 public:
 	using Stack<T>::GetLength;
 	using Stack<T>::Pop;
 	using Stack<T>::ShowHead;
 	using Stack<T>::Push;
+	using Stack<T>::GetHead;
 
 	T Get(int pos);
 	void Set(int pos, T num);
 	void Sort(int N);
+	T& operator[](int n);
 };
 
 template <class T> T StackSort<T>::Get(int pos) {
@@ -114,6 +121,25 @@ template <class T> void StackSort<T>::Set(int pos, T num) {
 	for (int i = temp.GetLength(); i > 0; i--) {
 		Push(temp.Pop());
 	}
+}
+
+//template <class T> T StackSort<T>::operator[](int n) {
+//	return Get(n);
+//}
+
+template <class T> T& StackSort<T>::operator[](int n) {
+	Stack<T> temp;
+	T* target;
+
+	for (int i = GetLength() - 1; i > n; i--) {
+		temp.Push(Pop());
+	}
+	target = GetHead();
+	for (int i = temp.GetLength(); i > 0; i--) {
+		Push(temp.Pop());
+	}
+
+	return *target;
 }
 
 template <class T> void StackSort<T>::Sort(int n) {
@@ -159,18 +185,17 @@ template <class T> void StackSort<T>::Sort(int n) {
 
 int main()
 {
-	StackSort<int> stack = StackSort<int>();
+	StackSort<int> stack;
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 1; i <= 10; i++) {
 		stack.Push(i);
 	}
-	for (int i = 3; i < 8; i++) {
-		stack.Push(i);
-	}
+	//stack.ShowAll();
+	//cout << endl;
 
-	stack.ShowAll();
-	cout << endl;
-	stack.Sort(10);
+	//cout << stack[1] << endl;
+	stack[1] = 100;
+
 	stack.ShowAll();
 	cout << endl;
 }
