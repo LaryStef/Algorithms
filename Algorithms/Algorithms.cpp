@@ -142,10 +142,6 @@ template <class T> void StackSort<T>::Set(int pos, T num) {
 	}
 }
 
-//template <class T> T StackSort<T>::operator[](int n) {
-//	return Get(n);
-//}
-
 template <class T> T& StackSort<T>::operator[](int n) {
 	Stack<T> temp;			N_op += 1;
 	T* target;		 N_op += 1;
@@ -212,13 +208,24 @@ template <class T> void StackSort<T>::Sort(int n) {
 
 int main()
 {
+	StackSort<int> stack;
+
+	for (int i = 0; i < 10; i++) {
+		stack.Push(rand() % 101);
+	}
+
+	stack.ShowAll();
+	cout << endl;
+	stack.Sort(10);
+	stack.ShowAll();
+
 	unsigned long long int start, final;
 
 	for (int i = 1; i < 11; i++) {
 		StackSort<int> stack;
 
-		for (int j = 0; j < i * 10000; j++) {
-			stack.Push(rand() % 100);
+		for (int j = 0; j < i * 100; j++) {
+			stack.Push(rand() % 1000);
 		}
 
 		start = GetTickCount64();
@@ -232,4 +239,7 @@ int main()
 
 		cout << endl;
 	}
+	
+
+	system("pause");
 }
