@@ -160,64 +160,97 @@ template <class T> T& StackSort<T>::operator[](int n) {
 	return *target;
 }
 
-template <class T> void StackSort<T>::Sort(int n) {
-	int m = 0;			N_op += 2;
+//template <class T> void StackSort<T>::Sort(int n) {
+//	int m = 0;			N_op += 2;
+//
+//	N_op += 3;
+//	for (int i = 0; i < n; i++) {
+//		m = max(m, Get(i));			N_op += 4;
+//	}
+//
+//	StackSort<int> countStack; N_op += 1;
+//
+//	N_op += 3;
+//	for (int i = 0; i <= m; i++) {
+//		countStack.Push(0);		N_op += 2;
+//	}
+//
+//	N_op += 3;
+//	for (int i = 0; i < n; i++) {
+//		countStack.Set(Get(i), countStack.Get(Get(i)) + 1);			N_op += 3;
+//	}
+//
+//	N_op += 3;
+//	for (int i = 1; i <= m; i++) {
+//		countStack.Set(i, countStack.Get(i) + countStack.Get(i - 1));		N_op += 4;
+//	}
+//
+//	StackSort<int> outputStack;		N_op += 1;
+//
+//	N_op += 3;
+//	for (int i = 0; i < n; i++) { outputStack.Push(0); N_op += 2; }
+//
+//	N_op += 4;
+//	for (int i = n - 1; i >= 0; i--)
+//	{
+//		outputStack.Set(countStack.Get(Get(i)) - 1, Get(i));			N_op += 1;
+//		countStack.Set(Get(i), countStack.Get(Get(i)) - 1);		N_op += 1;
+//		N_op += 2;
+//	}
+//
+//	N_op += 3;
+//	for (int i = 0; i < n; i++) {
+//		Set(i, outputStack.Pop());			N_op += 2;
+//	}
+//
+//	N_op += countStack.N_op + outputStack.N_op;
+//}
 
-	N_op += 3;
+template<class T> void StackSort<T>::Sort(int n) {
+
+	StackSort<int> countStack;
+	StackSort<int> resStack;
+
 	for (int i = 0; i < n; i++) {
-		m = max(m, Get(i));			N_op += 4;
+		countStack.Push(0);
+		resStack.Push(0);
 	}
 
-	StackSort<int> countStack; N_op += 1;
-
-	N_op += 3;
-	for (int i = 0; i <= m; i++) {
-		countStack.Push(0);		N_op += 2;
-	}
-
-	N_op += 3;
 	for (int i = 0; i < n; i++) {
-		countStack.Set(Get(i), countStack.Get(Get(i)) + 1);			N_op += 3;
+		for (int j = i + 1; j < n; j++) {
+			if (Get(i) > Get(j)) {
+				countStack.Set(i, countStack.Get(i) + 1);
+			}
+			else {
+				countStack.Set(j, countStack.Get(j) + 1);
+			}
+
+		}
+
 	}
 
-	N_op += 3;
-	for (int i = 1; i <= m; i++) {
-		countStack.Set(i, countStack.Get(i) + countStack.Get(i - 1));		N_op += 4;
-	}
-
-	StackSort<int> outputStack;		N_op += 1;
-
-	N_op += 3;
-	for (int i = 0; i < n; i++) { outputStack.Push(0); N_op += 2; }
-
-	N_op += 4;
-	for (int i = n - 1; i >= 0; i--)
-	{
-		outputStack.Set(countStack.Get(Get(i)) - 1, Get(i));			N_op += 1;
-		countStack.Set(Get(i), countStack.Get(Get(i)) - 1);		N_op += 1;
-		N_op += 2;
-	}
-
-	N_op += 3;
 	for (int i = 0; i < n; i++) {
-		Set(i, outputStack.Pop());			N_op += 2;
+		resStack.Set(countStack.Get(i), Get(i));
 	}
 
-	N_op += countStack.N_op + outputStack.N_op;
+	for (int i = 0; i < n; i++) {
+
+		Set(i, resStack.Pop());
+	}
 }
 
 int main()
 {
-	StackSort<int> stack;
+	//StackSort<int> stack;
 
-	for (int i = 0; i < 10; i++) {
-		stack.Push(rand() % 101);
-	}
+	//for (int i = 0; i < 10; i++) {
+	//	stack.Push(rand() % 101);
+	//}
 
-	stack.ShowAll();
-	cout << endl;
-	stack.Sort(10);
-	stack.ShowAll();
+	//stack.ShowAll();
+	//cout << endl;
+	//stack.Sort(10);
+	//stack.ShowAll();
 
 	unsigned long long int start, final;
 
